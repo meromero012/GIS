@@ -1,5 +1,5 @@
 var map;
-var geocoder;
+//var geocoder;
 var markers=[];
 var nearestEdtMarkers=[];
 
@@ -14,15 +14,15 @@ function initialize()
  };
 
  map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
- geocoder = new google.maps.Geocoder();
+ //geocoder = new google.maps.Geocoder();
 
  showEDTs(getEdtFeatureCollection());
  placeMarker(myCenter);
 
  google.maps.event.addListener(map, 'click', function(event) {
   placeMarker(event.latLng);
-  updateLatLng(event.latLng);
-  geocodeLatLng(event.latLng)
+  updateLatLng(event.latLng)//;
+  //geocodeLatLng(event.latLng)
  });
 }
 
@@ -85,7 +85,7 @@ function setNearestEDTMarker(lat, lng) {
  }
 }
 
-function geocodeLatLng(latLng) {
+/*function geocodeLatLng(latLng) {
  var latlng = {lat: parseFloat(latLng.lat().toFixed(6)), lng: parseFloat(latLng.lng().toFixed(6))};
  geocoder.geocode({'location': latlng}, function(results, status) {
     if (status === google.maps.GeocoderStatus.OK) {
@@ -98,4 +98,4 @@ function geocodeLatLng(latLng) {
       window.alert('Geocoder failed due to: ' + status);
     }
   });
-}
+}*/

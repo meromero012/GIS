@@ -1,5 +1,4 @@
 var map;
-//var geocoder;
 var markers=[];
 var nearestEdtMarkers=[];
 
@@ -14,15 +13,13 @@ function initialize()
  };
 
  map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
- //geocoder = new google.maps.Geocoder();
 
  showEDTs(getEdtFeatureCollection());
  placeMarker(myCenter);
 
  google.maps.event.addListener(map, 'click', function(event) {
   placeMarker(event.latLng);
-  updateLatLng(event.latLng)//;
-  //geocodeLatLng(event.latLng)
+  updateLatLng(event.latLng)
  });
 }
 
@@ -84,18 +81,3 @@ function setNearestEDTMarker(lat, lng) {
   nearestEdtMarkers.push(marker);
  }
 }
-
-/*function geocodeLatLng(latLng) {
- var latlng = {lat: parseFloat(latLng.lat().toFixed(6)), lng: parseFloat(latLng.lng().toFixed(6))};
- geocoder.geocode({'location': latlng}, function(results, status) {
-    if (status === google.maps.GeocoderStatus.OK) {
-      if (results[0]) {
-        results[0].address_components.foreach(function(addrComp){if(addrComp.types[1]=="administrative_area_level_1"){document.getElementById("newEdtProvBox").value = addrComp.long_name}});
-      } else {
-        window.alert('No results found');
-      }
-    } else {
-      window.alert('Geocoder failed due to: ' + status);
-    }
-  });
-}*/

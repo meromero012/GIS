@@ -1,4 +1,5 @@
 var map;
+var geocoder;
 var markers=[];
 var nearestEdtMarkers=[];
 
@@ -13,13 +14,15 @@ function initialize()
  };
 
  map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
+ geocoder = new google.maps.Geocoder();
 
  showEDTs(getEdtFeatureCollection());
  placeMarker(myCenter);
 
  google.maps.event.addListener(map, 'click', function(event) {
   placeMarker(event.latLng);
-  updateLatLng(event.latLng)
+  updateLatLng(event.latLng);
+  geocodeLatLng(event.latLng)
  });
 }
 
@@ -57,6 +60,8 @@ function showEDTs(geojsonList){
  });
 }
 
+google.maps.event.addDomListener(window, 'load', initialize);
+
 function proximitySearch(){
  var jqXHR = $.ajax({type: 'POST', url: 'php/proximitySearch.php',data: {'lat': document.getElementById("latbox").value, 'lng': document.getElementById("lngbox").value}, async: false});
 
@@ -80,4 +85,46 @@ function setNearestEDTMarker(lat, lng) {
 
   nearestEdtMarkers.push(marker);
  }
+}
+
+function clearGeocodeValues() {
+ document.getElementById("newEdtLatBox").value = "";
+ document.getElementById("newEdtLngBox").value = "";
+ document.getElementById("newEdtProvBox").value = "";
+ document.getElementById("newEdtLocBox").value = "";
+ document.getElementById("newEdtSitBox").value = "";
+}
+
+function geocodeLatLng(latLng) {
+ clearGeocodeValues();
+
+ document.getElementById("newEdtLatBox").value = latLng.lat().toFixed(6);
+ document.getElementById("newEdtLngBox").value = latLng.lng().toFixed(6);
+
+ var latlng = {lat: parseFloat(latLng.lat().toFixed(6)), lng: parseFloat(latLng.lng().toFixed(6))};
+ var prov;
+
+ geocoder.geocode({'location': latlng}, function(results, status) {
+    if (status === google.maps.GeocoderStatus.OK) {
+      if (results[0]) {
+        for(i=0; i<results[0].address_components.length; i++) {
+         if (results[0].address_components[i].types[0]=="administrative_area_level_1") {
+          document.getElementById("newEdtProvBox").value = results[0].address_components[i].long_name;
+         } else if (results[0].address_components[i].types[0]=="locality") {
+          document.getElementById("newEdtLocBox").value = results[0].address_components[i].long_name;
+          document.getElementById("newEdtSitBox").value = results[0].address_components[i].long_name;
+         }
+        }
+//Si la ubicacion no posee localidad se le asigna la provincia.
+       if (document.getElementById("newEdtLocBox").value=="") {
+         document.getElementById("newEdtLocBox").value = document.getElementById("newEdtProvBox").value;
+         document.getElementById("newEdtSitBox").value = document.getElementById("newEdtProvBox").value;
+       }
+      } else {
+        window.alert('No results found');
+      }
+    } else {
+      window.alert('Geocoder failed due to: ' + status);
+    }
+  });
 }

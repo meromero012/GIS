@@ -13,8 +13,6 @@
 	<script type="text/javascript" src="tabs.js"></script>
 	<script type="text/javascript" src="maps.js"></script>
 	<script>
-	google.maps.event.addDomListener(window, 'load', initialize);
-
 	function search(){
 	 edtJSON = JSON.parse(proximitySearch());
 	 document.getElementById("nearestEdtLatBox").value = edtJSON['latitud'];
@@ -87,7 +85,7 @@
 						<div>Elevacion: <span id="newEdtEle"></span> <input type="text" id="newEdtEleBox" name="newEdtEleBox" value="" ></div>
 						<div>Provincia: <span id="newEdtProv"></span> <input type="text" id="newEdtProvBox" name="newEdtProvBox" value="" ></div>
 						<div>Localidad: <span id="newEdtLoc"></span> <input type="text" id="newEdtLocBox" name="newEdtLocBox" value="" ></div>
-						<div>Sitio: <span id="newSitLoc"></span> <input type="text" id="newEdtSitBox" name="newEdtSitBox" value="" ></div>
+						<div>Sitio: <span id="newEdtSit"></span> <input type="text" id="newEdtSitBox" name="newEdtSitBox" value="" ></div>
 						<br />
 						<input type="button" name="edtCreate" value="Alta" onclick="create()" />
 						<br />

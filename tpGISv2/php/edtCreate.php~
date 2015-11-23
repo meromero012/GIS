@@ -2,23 +2,23 @@
 
 $lat = $_POST['lat'];
 $lng = $_POST['lng'];
-$lng = $_POST['prov'];
-$lng = $_POST['loc'];
-$lng = $_POST['alt'];
-//$lng = $_POST['sit'];
+$prov = $_POST['prov'];
+$loc = $_POST['loc'];
+$ele = $_POST['ele'];
+$sit = $_POST['sit'];
 
 $conbd = pg_connect("host=localhost port=5432 dbname=PracticoGIS user=postgres password=postgres") or die(pg_last_error());  
 $sql = "INSERT INTO edt (id, provincia, localidad, latitud, longitud, altura_snm, sitio, geom)
 VALUES
 ((SELECT max(id) FROM edt) +1, /*id*/
- $1, /*provincia*/
- $2, /*localidad*/
+ '$1', /*provincia*/
+ '$2', /*localidad*/
  $3, /*latitud*/
  $4, /*longitud*/
  $5, /*altura_snm*/
- $1, /*sitio*/
- ST_Point($4,$3) /*geom*/);";
-$res = pg_query_params($conbd, $sql, array($prov, $loc, $lng, $lat, $alt));
+ '$6', /*sitio*/
+ ST_SetSRID(ST_MakePoint($4,$3), 4326) /*geom*/);";
+$res = pg_query_params($conbd, $sql, array($prov, $loc, $lat, $lng, $ele, $sit));
 
 $affRows = pg_affected_rows($res);
 

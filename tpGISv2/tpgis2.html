@@ -12,22 +12,6 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<script type="text/javascript" src="tabs.js"></script>
 	<script type="text/javascript" src="maps.js"></script>
-	<script>
-	function search(){
-	 edtJSON = JSON.parse(proximitySearch());
-	 document.getElementById("nearestEdtLatBox").value = edtJSON['latitud'];
-	 document.getElementById("nearestEdtLngBox").value = edtJSON['longitud'];
-	 document.getElementById("nearestEdtProvBox").value = edtJSON['provincia'];
-	 document.getElementById("nearestEdtLocBox").value = edtJSON['localidad'];
-	 document.getElementById("nearestEdtSitBox").value = edtJSON['sitio'];
-	 showDiv('results');
-	 setNearestEDTMarker(edtJSON['latitud'], edtJSON['longitud']);
-	}
-
-	function showDiv(divID) {
-	 document.getElementById(divID).style.display = "block";
-	}
-	</script>
 </head>
 <body>
 	<header class="site-header-wrap">

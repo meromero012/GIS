@@ -139,12 +139,17 @@ function proximitySearch(){
 }
 
 function edtCreate(){
+ var ele = 0;
+ if (document.getElementById("newEdtEleBox").value != "") {
+  ele = document.getElementById("newEdtEleBox").value;
+ }
+ 
  var jqXHR = $.ajax({type: 'POST', url: 'php/edtCreate.php',
                      data: {'lat': document.getElementById("newEdtLatBox").value,
                             'lng': document.getElementById("newEdtLngBox").value,
                             'prov': document.getElementById("newEdtProvBox").value,
                             'loc': document.getElementById("newEdtLocBox").value,
-                            'ele': document.getElementById("newEdtEleBox").value,
+                            'ele': ele,
                             'sit': document.getElementById("newEdtSitBox").value},
                     async: false});
 
@@ -193,8 +198,7 @@ function validateData() {
  document.getElementById("newEdtLngBox").value != "" &&
  document.getElementById("newEdtProvBox").value != "" &&
  document.getElementById("newEdtLocBox").value != "" &&
- document.getElementById("newEdtSitBox").value != "" &&
- document.getElementById("newEdtEleBox").value != "");
+ document.getElementById("newEdtSitBox").value != "");
 }
 
 function showDiv(divID) {

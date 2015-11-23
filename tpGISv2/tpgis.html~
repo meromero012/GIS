@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Trabajo Practico 2015 2do Cuatr. | GIS UTN</title>
+
+	<meta name="viewport" content="initial-scale=1, maximum-scale=1">
+
+	<link rel="stylesheet" type="text/css" href="reset.css">
+	<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Asap|Gudea:400,400italic,700">
+	<link rel="stylesheet" type="text/css" href="main.css?753765">
+
+	<link rel="stylesheet" type="text/css" href="tabs.css?753765">
+
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script type="text/javascript" src="tabs.js"></script>
+</head>
+<body>
+	<header class="site-header-wrap">
+		<div class="site-header">
+			<h1>GIS UTN</h1>
+			<span class="site-tagline">Trabajo Practico 2015 2do Cuatr.</span>
+		</div>
+	</header>
+
+		<br /><br /><br /><br /><br /><br />
+
+		<div class="main">
+			<h2>Seleccione una de las siguientes alternativas:</h2>
+
+			<div class="tabs animated-slide-1">
+				<ul class="tab-links">
+					<li class="active"><a href="#tab111">Consulta de EDTs</a></li>
+					<li><a href="#tab222">Alta de EDTs</a></li>
+				</ul>
+
+				<div class="tab-content">
+					<div id="tab111" class="tab active">
+						<?php include 'parte1/parte1.php';?>
+					</div>
+
+					<div id="tab222" class="tab">
+						<p>Patente pendiente</p>
+						<p>...</p>
+					</div>
+				</div>
+			</div>
+		</div><!--end .main-->
+
+		<br /><br /><br /><br /><br /><br />
+
+	</div>
+</body>
+</html>

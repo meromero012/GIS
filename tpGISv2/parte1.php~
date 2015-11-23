@@ -1,0 +1,115 @@
+<?php
+$conbd = pg_connect("host=localhost port=5432 dbname=PracticoGIS user=postgres password=postgres") or die(pg_last_error());  
+$sql = "SELECT row_to_json(fc)
+ FROM ( SELECT 'FeatureCollection' As type, array_to_json(array_agg(f)) As features
+ FROM (SELECT 'Feature' As type
+    , ST_AsGeoJSON(lg.geom)::json As geometry
+    , row_to_json((SELECT l FROM (SELECT gid, provincia, localidad, sitio) As l
+      )) As properties
+   FROM edt As lg   ) As f )  As fc;";
+$res = pg_query($conbd, $sql);
+
+$edtLocations = pg_fetch_result($res, 0, 0);
+
+pg_close($conbd);
+?>
+<script src="http://maps.googleapis.com/maps/api/js"> </script>
+<script>
+var map;
+var markers=[];
+var edtLocations = <?php echo json_encode($edtLocations);?>;
+var myCenter=new google.maps.LatLng(-39.9771201, -65.47851562);
+
+function initialize()
+{
+var mapProp = {
+  center:myCenter,
+  zoom:4,
+  mapTypeId:google.maps.MapTypeId.ROADMAP
+  };
+
+  map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
+
+  showEDTs(edtLocations);
+  placeMarker(myCenter);
+
+  google.maps.event.addListener(map, 'click', function(event) {
+    placeMarker(event.latLng);
+    document.getElementById("latbox").value=event.latLng.lat().toFixed(6);
+    document.getElementById("lngbox").value=event.latLng.lng().toFixed(6);
+  });
+}
+
+function placeMarker(eventPosition) {
+  if (markers.length == 1) {
+   markers[0].setPosition(eventPosition);
+  }
+  else if (markers.length < 1) {
+   var marker = new google.maps.Marker({
+    position: eventPosition,
+    map: map,
+    draggable: false
+   });
+
+   markers.push(marker);
+  }
+}
+
+function showEDTs(geojsonList){
+ map.data.addGeoJson(JSON.parse(geojsonList), 'edtLayer');
+ var antennaIcon = new google.maps.MarkerImage('edtAntenna.png');
+ map.data.setStyle({
+   icon:antennaIcon
+ });
+}
+
+google.maps.event.addDomListener(window, 'load', initialize);
+</script>
+<?php
+function proximitySearch($lat, $lng){
+ $conbd = pg_connect("host=localhost port=5432 dbname=PracticoGIS user=postgres password=postgres") or die(pg_last_error());  
+ $sql = "SELECT latitud, longitud, 'Provincia: ' || provincia || ' - Localidad: ' || localidad || ' - Sitio: ' || sitio AS descripcion
+FROM edt
+ORDER BY ST_DISTANCE(ST_POINT({$lng}, {$lat}), ST_POINT(longitud, latitud)) ASC
+LIMIT 1;";
+ $res = pg_query($conbd, $sql);
+ $edt = pg_fetch_array($res);
+
+ pg_close($conbd);
+
+ return $edt;
+}
+
+echo "<script>document.writeln(lat);</script>";
+?>
+<script>
+function search(){
+ var lat = document.getElementById("latbox").value;
+ var lng = document.getElementById("lngbox").value;
+ var edt = <?php echo json_encode("<script>document.writeln(lat);</script>", "<script>document.writeln(lng);</script>");?>;
+ showDiv('results');
+}
+
+function showDiv(divID) {
+ document.getElementById(divID).style.display = "block";
+}
+</script>
+<table>
+  <tr>
+    <td>
+      <div id="googleMap" style="width:500px;height:400px;"></div>
+    </td>
+    <td>
+      <div>Seleccione su ubicacion haciendo click en el mapa y presione
+         el boton de busqueda para encontrar la antena EDT mas cercana.</div>
+      <br />
+      <div>Latitud: <span id="lat"></span> <input size="15" type="text" id="latbox" name="lat" value="" ></div>
+      <div>Longitud: <span id="lng"></span> <input size="15" type="text" id="lngbox" name="lng" value="" ></div>
+      <br />
+      <input type="button" name="proximitySearch" value="Buscar" onclick="search()" />
+      <div id="results"  style="display:none;" class="answer_list" >
+        <p>Antena EDT:</p>
+      </div>
+    </td>
+  </tr>
+</table>

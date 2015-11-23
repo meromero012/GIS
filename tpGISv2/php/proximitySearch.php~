@@ -1,0 +1,24 @@
+<?php
+
+$lat = $_POST['lat'];
+$lng = $_POST['lng'];
+
+$conbd = pg_connect("host=localhost port=5432 dbname=PracticoGIS user=postgres password=postgres") or die(pg_last_error());  
+$sql = "select row_to_json(p)
+from 
+(select
+	trunc(p1.latitud, 6) as latitud, trunc(p1.longitud, 6) as longitud,
+	to_char(float8 (ST_Distance_Sphere(p1.geom,ST_MakePoint($1, $2))/1000), 'FM999999999.00') as distanciaKm,
+	p1.provincia, p1.localidad, p1.sitio 
+ from edt p1
+ order by 3
+ limit 1) p";
+$res = pg_query_params($conbd, $sql, array($lng, $lat));
+
+$edtData = pg_fetch_result($res, 0, 0);
+
+pg_close($conbd);
+
+echo $edtData;
+
+?>

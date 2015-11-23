@@ -1,0 +1,19 @@
+<?php
+include_once('EdtClass.php');
+$edt = new edtClass();
+//$edt->getEdtFeatureCollection();
+
+if (isset($_GET["categoryID"])) {
+ $action = $_GET["categoryID"];
+ switch($action) {
+  case 'test' : $edt->getEdtFeatureCollection();break;
+ }
+}
+/*if(isset($_POST['action']) && !empty($_POST['action'])) {
+    $action = $_POST['action'];
+    switch($action) {
+        case 'test' : test();break;
+        case 'blah' : blah();break;
+    }
+}*/
+?>

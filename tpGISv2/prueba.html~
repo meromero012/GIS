@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Page Title</title>
+</head>
+<body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script>
+var edtLocations = getEdtFeatureCollection();
+
+/*function getEdtFeatureCollection() {
+ var request = new XMLHttpRequest();
+  request.onreadystatechange = function()  
+  {  
+    switch (request.readyState)  
+    {  
+       case 0:  
+          edtLocations = 'Error 0. No se ha abierto la comunicaci&oacute;n.';  
+          break;  
+       case 1:  
+          edtLocations = 'Por favor, espere. Cargando...';  
+          break;  
+       case 2:  
+          edtLocations = 'Petici&oacute;n cargada, esperando respuesta del servidor...';  
+          break;  
+       case 3:  
+          objDiv.innerHTML = '';  
+          break;  
+       case 4:  
+          if(ajax.status == 200)  
+          {  
+            edtLocations = "";  
+            edtLocations = request.responseText;  
+          }  
+          else  
+          {  
+            edtLocations = 'Error 200';  
+          }  
+          break;  
+    }  
+  }  
+ request.open('POST', 'edtFeatureCollection.php', true);
+ request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded"); 
+ request.send();
+}
+getEdtFeatureCollection();
+document.write(edtLocations);*/
+
+function getEdtFeatureCollection() {
+ var jqXHR = $.ajax({url: "edtFeatureCollection.php", async: false});
+
+ return jqXHR.responseText;
+}
+
+document.write(edtLocations);
+
+</script>
+</body>
+</html>

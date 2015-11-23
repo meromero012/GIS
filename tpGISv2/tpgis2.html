@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Trabajo Practico 2015 2do Cuatr. | GIS UTN</title>
+
+	<meta name="viewport" content="initial-scale=1, maximum-scale=1">
+	<link rel="stylesheet" type="text/css" href="reset.css">
+	<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Asap|Gudea:400,400italic,700">
+	<link rel="stylesheet" type="text/css" href="main.css?753765">
+	<link rel="stylesheet" type="text/css" href="tabs.css?753765">
+	<script src="http://maps.googleapis.com/maps/api/js" async defer> </script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script type="text/javascript" src="tabs.js"></script>
+	<script type="text/javascript" src="maps.js"></script>
+	<script>
+	google.maps.event.addDomListener(window, 'load', initialize);
+
+	function search(){
+	 edtJSON = JSON.parse(proximitySearch());
+	 document.getElementById("nearestEdtLatBox").value = edtJSON['latitud'];
+	 document.getElementById("nearestEdtLngBox").value = edtJSON['longitud'];
+	 document.getElementById("nearestEdtProvBox").value = edtJSON['provincia'];
+	 document.getElementById("nearestEdtLocBox").value = edtJSON['localidad'];
+	 document.getElementById("nearestEdtSitBox").value = edtJSON['sitio'];
+	 showDiv('results');
+	 setNearestEDTMarker(edtJSON['latitud'], edtJSON['longitud']);
+	}
+
+	function showDiv(divID) {
+	 document.getElementById(divID).style.display = "block";
+	}
+	</script>
+</head>
+<body>
+	<header class="site-header-wrap">
+		<div class="site-header">
+			<h1>GIS UTN</h1>
+			<span class="site-tagline">Trabajo Practico 2015 2do Cuatr.</span>
+		</div>
+	</header>
+
+		<br /><br /><br /><br /><br /><br />
+
+		<div class="main">
+			<h2>Seleccione una de las siguientes alternativas:</h2>
+			<table>
+				<tr>
+					<td><div id="googleMap" style="width:500px;height:400px;"></div></td>
+					<td>
+						<div>Datos de la ubicacion actual</div>
+						<br />
+						<div>Latitud: <span id="lat"></span> <input size="15" type="text" id="latbox" name="lat" value="" ></div>
+						<div>Longitud: <span id="lng"></span> <input size="15" type="text" id="lngbox" name="lng" value="" ></div>
+					</td>
+				</tr>
+			</table>
+			<div class="tabs animated-slide-1">
+				<ul class="tab-links">
+					<li class="active"><a href="#tab111">Consulta de EDTs</a></li>
+					<li><a href="#tab222">Alta de EDTs</a></li>
+				</ul>
+
+				<div class="tab-content">
+					<div id="tab111" class="tab active">
+					      <div>Seleccione su ubicacion haciendo click en el mapa y presione
+						 el boton de busqueda para encontrar la antena EDT mas cercana.</div>
+					      <br />
+					      <input type="button" name="proximitySearch" value="Buscar" onclick="search()" />
+					      <br />
+					      <div id="results"  style="display:none;" class="answer_list" >
+						<p>Datos de la EDT:
+							<div>Latitud: <span id="nearestEdtLat"></span> <input type="text" id="nearestEdtLatBox" name="nearestEdtLatBox" value="" ></div>
+							<div>Longitud: <span id="nearestEdtLng"></span> <input type="text" id="nearestEdtLngBox" name="nearestEdtLngBox" value="" ></div>
+							<div>Provincia: <span id="nearestEdtProv"></span> <input type="text" id="nearestEdtProvBox" name="nearestEdtProvBox" value="" ></div>
+							<div>Localidad: <span id="nearestEdtLoc"></span> <input type="text" id="nearestEdtLocBox" name="nearestEdtLocBox" value="" ></div>
+							<div>Sitio: <span id="nearestSitLoc"></span> <input type="text" id="nearestEdtSitBox" name="nearestEdtSitBox" value="" ></div>
+						</p>
+					      </div>
+					</div>
+
+					<div id="tab222" class="tab">
+					      <div>Seleccione su ubicacion haciendo click en el mapa y presione
+						 el boton de alta para agregar una antena EDT.</div>
+						<br />
+						<div>Latitud: <span id="newEdtLat"></span> <input type="text" id="newEdtLatBox" name="newEdtLatBox" value="" ></div>
+						<div>Longitud: <span id="newEdtLng"></span> <input type="text" id="newEdtLngBox" name="newEdtLngBox" value="" ></div>
+						<div>Elevacion: <span id="newEdtEle"></span> <input type="text" id="newEdtEleBox" name="newEdtEleBox" value="" ></div>
+						<div>Provincia: <span id="newEdtProv"></span> <input type="text" id="newEdtProvBox" name="newEdtProvBox" value="" ></div>
+						<div>Localidad: <span id="newEdtLoc"></span> <input type="text" id="newEdtLocBox" name="newEdtLocBox" value="" ></div>
+						<div>Sitio: <span id="newSitLoc"></span> <input type="text" id="newEdtSitBox" name="newEdtSitBox" value="" ></div>
+						<br />
+						<input type="button" name="edtCreate" value="Alta" onclick="create()" />
+						<br />
+					</div>
+				</div>
+			</div>
+		</div><!--end .main-->
+
+		<br /><br /><br /><br /><br /><br />
+
+	</div>
+</body>
+</html>

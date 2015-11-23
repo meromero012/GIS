@@ -1,0 +1,38 @@
+function initialize()
+{
+var mapProp = {
+  center:myCenter,
+  zoom:4,
+  mapTypeId:google.maps.MapTypeId.ROADMAP
+  };
+
+  map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
+
+  showEDTs(edtLocations);
+
+  google.maps.event.addListener(map, 'click', function(event) {
+    placeMarker(event.latLng);
+  });
+}
+
+function placeMarker(location) {
+  if (markers.length < 1) {
+    var marker = new google.maps.Marker({
+      position: location,
+      map: map,
+      draggable: true
+    });
+    markers.push(marker);
+  }
+  else {
+    alert("Solamente puede analizarse la distancia de un punto a la torre mas cercana.");
+  }
+}
+
+function showEDTs(geojsonList){
+ map.data.addGeoJson(JSON.parse(geojsonList), 'edtLayer');
+ var antennaIcon = new google.maps.MarkerImage('edtAntenna.png');
+ map.data.setStyle({
+   icon:antennaIcon
+ });
+}

@@ -221,7 +221,7 @@ function create() {
 
  if(validateData()) {
   status = edtCreate();
-  if(edtCreate() != 0) {
+  if(status != 0) {
    alert("La antena EDT fue dada de alta exitosamente.");
    location.reload();
   } else {
